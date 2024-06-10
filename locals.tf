@@ -34,6 +34,6 @@ locals {
   redis_description             = format("Redis instance %s", local.resource_tag)
   redis_user_group_name         = format("%s", local.resource_tag)
   associated_security_group_ids = concat([aws_security_group.redis_cluster_sg.id], var.additional_security_group_ids_to_associate)
-  redis_default_user_id         = format("restricted-$s-%s-user", var.environment, var.aws_elasticache_user_name)
+  redis_default_user_id         = format("restricted-%s-%s-user", var.environment, var.aws_elasticache_user_name)
 }
 
