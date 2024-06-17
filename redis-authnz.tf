@@ -76,7 +76,7 @@ resource "aws_elasticache_user_group_association" "redis_associate_users_to_tena
 
   depends_on = [module.redis]
 }
-data "aws_caller_identity" "current" {}
+
 
 resource "random_password" "redis_special_password" {
   length           = 20
