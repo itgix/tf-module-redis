@@ -53,7 +53,7 @@ output "redis_policy_documents_for_tenants" {
   value       = data.aws_iam_policy_document.redis_authnz_policy_documents
 }
 
-output "redis_master_credentials_kms_key_arn" {
-  description = "Redis Master Credentials kms key arn"
+output "redis_credentials_kms_key_arn" {
+  description = "Redis Credentials kms key arn"
   value       = aws_kms_key.redis_secrets_kms_key.arn
 }
