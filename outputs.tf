@@ -52,3 +52,8 @@ output "redis_policy_documents_for_tenants" {
   description = "Policy documents for Redis tenants"
   value       = data.aws_iam_policy_document.redis_authnz_policy_documents
 }
+
+output "redis_master_credentials_kms_key_arn" {
+  description = "Redis Master Credentials kms key arn"
+  value       = aws_kms_key.redis_secret_kms_key.arn
+}
