@@ -112,13 +112,13 @@ resource "aws_elasticache_user" "redis_password_user" {
 
   authentication_mode {
     type      = "password"
-    passwords = [random_password.redis_special_password[0].result]
+    passwords = [random_password.redis_special_password.result]
   }
 }
 
 resource "aws_elasticache_user_group_association" "redis_associate_password_user_to_group" {
   user_group_id = local.redis_user_group_name
-  user_id       = aws_elasticache_user.redis_password_user[0].user_id
+  user_id       = aws_elasticache_user.redis_password_user.user_id
 }
 
 module "redis_additional_secrets" {
@@ -126,10 +126,10 @@ module "redis_additional_secrets" {
   version = "0.6.2"
   secrets = {
     (local.redis_user_name) = {
-      kms_key_id = aws_kms_key.redis_secrets_kms_key[0].arn
+      kms_key_id = aws_kms_key.redis_secrets_kms_key.arn
       secret_key_value = {
         username = local.redis_user_name
-        password = random_password.redis_special_password[0].result
+        password = random_password.redis_special_password.result
       }
     }
   }
