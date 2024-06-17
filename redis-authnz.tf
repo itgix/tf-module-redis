@@ -76,3 +76,61 @@ resource "aws_elasticache_user_group_association" "redis_associate_users_to_tena
 
   depends_on = [module.redis]
 }
+data "aws_caller_identity" "current" {}
+
+resource "random_password" "redis_special_password" {
+  length           = 20
+  special          = true
+  override_special = "!&#^<>-"
+}
+
+resource "aws_kms_key" "redis_secrets_kms_key" {
+  description         = "KMS key to be used to encrypt the Additional redis user secrets"
+  enable_key_rotation = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "Full Access for root account"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = ["kms:*"]
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_elasticache_user" "redis_password_user" {
+  user_id       = local.redis_user_name
+  user_name     = local.redis_user_name
+  access_string = "on ~* +@all"
+  engine        = "REDIS"
+
+  authentication_mode {
+    type      = "password"
+    passwords = [random_password.redis_special_password[0].result]
+  }
+}
+
+resource "aws_elasticache_user_group_association" "redis_associate_password_user_to_group" {
+  user_group_id = local.redis_user_group_name
+  user_id       = aws_elasticache_user.redis_password_user[0].user_id
+}
+
+module "redis_additional_secrets" {
+  source  = "lgallard/secrets-manager/aws"
+  version = "0.6.2"
+  secrets = {
+    (local.redis_user_name) = {
+      kms_key_id = aws_kms_key.redis_secrets_kms_key[0].arn
+      secret_key_value = {
+        username = local.redis_user_name
+        password = random_password.redis_special_password[0].result
+      }
+    }
+  }
+}
