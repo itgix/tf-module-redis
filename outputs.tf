@@ -55,5 +55,5 @@ output "redis_policy_documents_for_tenants" {
 
 output "redis_secrets_kms_key_arn" {
   description = "Redis Credentials kms key arn"
-  value       = module.redis.arn
+  value       = aws_kms_key.arn
 }
