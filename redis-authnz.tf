@@ -131,7 +131,8 @@ module "redis_additional_secrets" {
         username = local.redis_user_name
         password = random_password.redis_special_password.result
       }
+      recovery_window_in_days = 0
     }
   }
-  recovery_window_in_days = 0
+
 }
