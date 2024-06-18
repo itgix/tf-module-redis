@@ -133,4 +133,5 @@ module "redis_additional_secrets" {
       }
     }
   }
+  recovery_window_in_days = 0
 }
