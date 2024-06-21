@@ -74,7 +74,7 @@ resource "aws_elasticache_user_group_association" "redis_associate_users_to_tena
   user_group_id = aws_elasticache_user_group.redis_tenants.user_group_id
   user_id       = aws_elasticache_user.iam_tenants[each.key].user_id
 
-  depends_on = [module.redis]
+  depends_on = [module.redis,aws_elasticache_user_group.redis_tenants]
 }
 
 
