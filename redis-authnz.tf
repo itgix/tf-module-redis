@@ -69,8 +69,9 @@ resource "aws_elasticache_user_group" "redis_tenants" {
 }
 
 resource "time_sleep" "wait_30_seconds" {
-  depends_on = [module.redis]
-  destroy_duration = "30s"
+  depends_on = [module.redis,aws_elasticache_user_group.redis_tenants]
+  destroy_duration = "40s"
+  create_duration = "20s"
 }
 # Associate tenants to default cluster user_group
 resource "aws_elasticache_user_group_association" "redis_associate_users_to_tenants_group" {
