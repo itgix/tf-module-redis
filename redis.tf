@@ -40,6 +40,8 @@ module "redis" {
 
   log_delivery_configuration = local.log_delivery_configuration
 
+  depends_on = [ aws_elasticache_user_group.redis_tenants ]
+
   # parameter = [
   #   {
   #     name  = "notify-keyspace-events"
