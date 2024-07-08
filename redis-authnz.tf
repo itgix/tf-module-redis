@@ -79,10 +79,6 @@ resource "aws_elasticache_user_group_association" "redis_associate_users_to_tena
   user_id       = aws_elasticache_user.iam_tenants[each.key].user_id
 
   depends_on = [module.redis,aws_elasticache_user_group.redis_tenants,time_sleep.wait_30_seconds]
-
-  timeouts {
-    delete = "25m"
-  }
 }
 
 
