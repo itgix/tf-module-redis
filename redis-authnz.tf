@@ -68,14 +68,23 @@ resource "aws_elasticache_user_group" "redis_tenants" {
   depends_on = [aws_elasticache_user.default_user]
 }
 
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [module.redis]
+  destroy_duration = "30s"
+}
 # Associate tenants to default cluster user_group
 resource "aws_elasticache_user_group_association" "redis_associate_users_to_tenants_group" {
   for_each      = var.redis_tenants
   user_group_id = aws_elasticache_user_group.redis_tenants.user_group_id
   user_id       = aws_elasticache_user.iam_tenants[each.key].user_id
 
-  depends_on = [module.redis,aws_elasticache_user_group.redis_tenants]
+  depends_on = [module.redis,aws_elasticache_user_group.redis_tenants,time_sleep.wait_30_seconds]
+
+  timeouts {
+    delete = "25m"
+  }
 }
+
 
 
 resource "random_password" "redis_special_password" {
