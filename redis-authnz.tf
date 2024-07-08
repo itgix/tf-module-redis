@@ -123,8 +123,9 @@ resource "aws_elasticache_user" "redis_password_user" {
 }
 
 resource "aws_elasticache_user_group_association" "redis_associate_password_user_to_group" {
-  user_group_id = local.redis_user_group_name
+  user_group_id = aws_elasticache_user_group.redis_tenants.user_group_id
   user_id       = aws_elasticache_user.redis_password_user.user_id
+  depends_on    = [module.redis,aws_elasticache_user_group.redis_tenants]
 }
 
 module "redis_additional_secrets" {
