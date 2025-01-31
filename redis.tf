@@ -37,6 +37,7 @@ module "redis" {
   at_rest_encryption_enabled           = var.at_rest_encryption_enabled
   transit_encryption_enabled           = var.transit_encryption_enabled
   user_group_ids                       = [aws_elasticache_user_group.redis_tenants.user_group_id]
+  tags                                 = var.redis_tags
 
   log_delivery_configuration = local.log_delivery_configuration
 

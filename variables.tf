@@ -171,6 +171,10 @@ variable "parameter_group_description" {
   description = "Managed by Terraform"
 }
 
+variable "redis_tags" {
+  type    = map(string)
+  default = {}
+}
 ################################################################################
 # Logging info variables
 ################################################################################
