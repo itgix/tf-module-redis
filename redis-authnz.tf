@@ -131,6 +131,7 @@ resource "aws_elasticache_user_group_association" "redis_associate_password_user
 module "redis_additional_secrets" {
   source  = "lgallard/secrets-manager/aws"
   version = "0.6.2"
+  tags    = var.redis_tags
   secrets = {
     (local.redis_user_name) = {
       kms_key_id = aws_kms_key.redis_secrets_kms_key.arn
