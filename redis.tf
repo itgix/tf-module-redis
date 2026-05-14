@@ -5,7 +5,7 @@ resource "aws_kms_key" "redis" {
 
 module "redis" {
   source  = "cloudposse/elasticache-redis/aws"
-  version = "1.2.3"
+  version = "1.10.0"
 
   enabled     = true
   namespace   = local.namespace
@@ -41,7 +41,7 @@ module "redis" {
 
   log_delivery_configuration = local.log_delivery_configuration
 
-  depends_on = [ aws_elasticache_user_group.redis_tenants ]
+  depends_on = [aws_elasticache_user_group.redis_tenants]
 
   # parameter = [
   #   {
