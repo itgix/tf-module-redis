@@ -32,6 +32,13 @@ module "redis" {
   cluster_mode_enabled                 = var.cluster_mode_enabled
   cluster_mode_num_node_groups         = var.cluster_mode_num_node_groups
   cluster_mode_replicas_per_node_group = var.cluster_mode_replicas_per_node_group
+  create_parameter_group               = var.serverless_enabled ? false : true
+  serverless_enabled                   = var.serverless_enabled
+  serverless_major_engine_version      = var.serverless_major_engine_version
+  serverless_snapshot_time             = var.serverless_snapshot_time
+  serverless_user_group_id             = var.serverless_user_group_id != null ? var.serverless_user_group_id : aws_elasticache_user_group.redis_tenants.user_group_id
+  serverless_cache_usage_limits        = var.serverless_cache_usage_limits
+  serverless_snapshot_arns_to_restore  = var.serverless_snapshot_arns_to_restore
   parameter                            = var.parameter
   parameter_group_description          = var.parameter_group_description
   at_rest_encryption_enabled           = var.at_rest_encryption_enabled
