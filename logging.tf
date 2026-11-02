@@ -6,7 +6,7 @@ locals {
   cloudwatch_log_group_name     = format("/aws/redis/redis-%s", local.resource_tag)
   s3_logs_prefix = format("elasticachelogs/AWSLogs/%s/RedisLogs/%s/",
     data.aws_caller_identity.current.account_id,
-  data.aws_region.current.name)
+  data.aws_region.current.region)
 
   redis_log_delivery_cloudwatch_configuration = !var.cloudwatch_logs_enabled ? [] : [
     {

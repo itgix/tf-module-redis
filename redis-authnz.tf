@@ -38,7 +38,7 @@ resource "aws_elasticache_user" "default_user" {
   user_id              = local.redis_default_user_id
   user_name            = var.aws_elasticache_user_name
   access_string        = var.aws_elasticache_user_permission
-  engine               = "REDIS"
+  engine               = "redis"
   no_password_required = true
 }
 
@@ -48,7 +48,7 @@ resource "aws_elasticache_user" "iam_tenants" {
   user_id       = each.key
   user_name     = each.key
   access_string = each.value.access_string
-  engine        = "REDIS"
+  engine        = "redis"
 
   authentication_mode {
     type = "iam"
@@ -57,7 +57,7 @@ resource "aws_elasticache_user" "iam_tenants" {
 
 # Create default cluster user_group
 resource "aws_elasticache_user_group" "redis_tenants" {
-  engine        = "REDIS"
+  engine        = "redis"
   user_group_id = local.redis_user_group_name
   user_ids      = var.aws_existing_default_user ? [local.redis_default_user_id] : [aws_elasticache_user.default_user[0].user_id]
 
@@ -114,7 +114,7 @@ resource "aws_elasticache_user" "redis_password_user" {
   user_id       = local.redis_user_name
   user_name     = local.redis_user_name
   access_string = "on ~* +@all"
-  engine        = "REDIS"
+  engine        = "redis"
 
   authentication_mode {
     type      = "password"
